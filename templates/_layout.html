@@ -6,13 +6,16 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <header>
         <nav>
             <a href="/">Главная страница</a>
-            {% if request.cookies.get("user_id") %}
+            {% if request.cookies.get("role") == "user" %}
                 <a href="/create">Создать заявку</a>
+                <a href="/logout">Выйти</a>
+            {% elif request.cookies.get("role") == "admin" %}
                 <a href="/logout">Выйти</a>
             {% else %}
                 <a href="/login">Войти</a>

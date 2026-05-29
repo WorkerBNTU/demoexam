@@ -6,7 +6,7 @@
   {% endif %}
   <form action="/register" method="post">
     <label>Логин
-      <input type="text" name="login" placeholder="Логин">
+      <input type="text" name="login" placeholder="Логин" PATTERN="[a-zA-Z0-9]{6,}">
     </label>
 
     <label>Email
@@ -18,7 +18,7 @@
     </label>
 
     <label>ФИО
-      <input type="text" name="fio" placeholder="ФИО">
+      <input type="text" name="fio" placeholder="ФИО" pattern="">
     </label>
 
     <label>Телефон

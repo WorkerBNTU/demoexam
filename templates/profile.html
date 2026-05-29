@@ -2,5 +2,24 @@
 
 {% block content %}
     <h2>Это профиль</h2>
-
+    <table>
+        <thead>
+            <tr>
+                <th>Курс</th>
+                <th>Дата</th>
+                <th>Оплата</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+                <tr>
+                    <td>{{ record.course }}</td>
+                    <td>{{ record.date }}</td>
+                    <td>{{ record.payment }}</td>
+                    <td>{{ record.status }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -1,0 +1,43 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+<h2>Таблица админа со всеми заявками всех пользователй</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Пользователь</th>
+        <th>Курс</th>
+        <th>Дата</th>
+        <th>Оплата</th>
+        <th>Статус</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for record, user in records %}
+    <tr>
+        <td>{{ user.fio }}</td>
+        <td>{{ record.course }}</td>
+        <td>{{ record.date }}</td>
+        <td>{{ record.payment }}</td>
+        <td>
+            <form method="post" action="/update/{{ record.id }}">
+                <select name="status">
+                    <option
+                            value="Новая"
+                            {% if record.status == "Новая" %}
+                            selected
+                            {% endif %}
+                    >Новая</option>
+                    <option value="Идет обучение" {% if record.status==
+                    "Идет обучение" %} selected {% endif %}>Идет обучение</option>
+                    <option value="Обучение завершено" {% if record.status==
+                    "Обучение завершено" %} selected {% endif %}>Обучение завершено</option>
+                </select>
+                <button type="submit">Сохранить</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

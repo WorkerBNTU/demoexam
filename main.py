@@ -59,7 +59,7 @@ def index(request: Request):
 def login_page(request: Request):
 
     if request.cookies.get("role"):
-        return RedirectResponse("/profile", status_code=302)
+        return RedirectResponse("/", status_code=302)
 
     return templates.TemplateResponse(
         request=request,
@@ -68,7 +68,7 @@ def login_page(request: Request):
 
 @app.post("/login")
 def login_process(request: Request, data: Annotated[UserAuth, Form()]):
-    response = RedirectResponse("/profile", status_code=302)
+    response = RedirectResponse("/", status_code=302)
     if data.login == "Admin" and data.password == "KorokNET":
         response.set_cookie("role", "admin")
         return response
@@ -94,7 +94,7 @@ def login_process(request: Request, data: Annotated[UserAuth, Form()]):
 @app.get("/register")
 def register_page(request: Request):
     if request.cookies.get("role"):
-        return RedirectResponse("/profile", status_code=302)
+        return RedirectResponse("/", status_code=302)
 
     return templates.TemplateResponse(
         request=request,
@@ -129,17 +129,20 @@ def logout():
 
 @app.get("/profile")
 def profile(request: Request):
+    if request.cookies.get("role") != "user":
+        return RedirectResponse("/", 302)
+
     user_id = request.cookies.get("user_id")
 
     with Session(bind=engine) as session:
-
+        s = select(Record).where(Record.user_id == user_id)
+        records = session.exec(s).all()
 
     return templates.TemplateResponse(
         request=request,
         name="profile.html",
         context={
-            "heading": "Привет!",
-            "user_name": "АДМИН"
+            "records": records
         }
     )
 
@@ -168,3 +171,33 @@ def create_record(request: Request, data: Annotated[NewRecord, Form()]):
         session.commit()
 
     return RedirectResponse("/profile", status_code=302)
+
+
+@app.get("/admin")
+def admin_page(request: Request):
+    if request.cookies.get("role") != "admin":
+        return RedirectResponse("/", 302)
+
+    with Session(bind=engine) as session:
+        s = select(Record, User).where(Record.user_id == User.id)
+        records = session.exec(s).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="admin.html",
+        context={
+            "records": records
+        }
+    )
+
+@app.post("/update/{record_id}")
+def update_record(record_id: int, status: Annotated[str, Form()]):
+    with Session(bind=engine) as session:
+        s = select(Record).where(Record.id == record_id)
+        record = session.exec(s).one()
+        record.status = status
+        session.add(record)
+        session.commit()
+        session.refresh(record)
+
+    return RedirectResponse("/admin", 302)
