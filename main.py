@@ -18,6 +18,7 @@ class Record(SQLModel, table=True):
     date: str
     payment: str
     status: str
+    review: str | None
     user_id: int
 
 class NewRecord(SQLModel):
@@ -191,11 +192,14 @@ def admin_page(request: Request):
     )
 
 @app.post("/update/{record_id}")
-def update_record(record_id: int, status: Annotated[str, Form()]):
+def update_record(record_id: int, status: Annotated[str | None, Form()] = None, review: Annotated[str | None, Form()] = None):
     with Session(bind=engine) as session:
         s = select(Record).where(Record.id == record_id)
         record = session.exec(s).one()
-        record.status = status
+        if status:
+            record.status = status
+        else:
+            record.review = review
         session.add(record)
         session.commit()
         session.refresh(record)

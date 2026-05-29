@@ -9,6 +9,7 @@
         <th>Курс</th>
         <th>Дата</th>
         <th>Оплата</th>
+        <th>Отзыв</th>
         <th>Статус</th>
     </tr>
     </thead>
@@ -19,6 +20,7 @@
         <td>{{ record.course }}</td>
         <td>{{ record.date }}</td>
         <td>{{ record.payment }}</td>
+        <td>{{ record.review }}</td>
         <td>
             <form method="post" action="/update/{{ record.id }}">
                 <select name="status">

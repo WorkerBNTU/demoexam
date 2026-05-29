@@ -9,6 +9,7 @@
                 <th>Дата</th>
                 <th>Оплата</th>
                 <th>Статус</th>
+                <th>Оставить отзыв</th>
             </tr>
         </thead>
         <tbody>
@@ -18,6 +19,18 @@
                     <td>{{ record.date }}</td>
                     <td>{{ record.payment }}</td>
                     <td>{{ record.status }}</td>
+                    <td>
+                        {% if record.review %}
+                            {{record.review}}
+                        {% elif record.status == "Обучение завершено" %}
+                            <form method="post" action="/update/{{ record.id }}">
+                                <textarea name="review" cols="30" rows="10"></textarea>
+                                <button type="submit">Отправить</button>
+                            </form>
+                        {% else %}
+                            Сначала нужно пройти обучение
+                        {% endif%}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
