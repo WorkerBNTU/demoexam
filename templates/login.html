@@ -1,0 +1,18 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+  {% if error %}
+    <span style="color: red">{{ error }}</span>
+  {% endif %}
+  <form action="/login" method="post">
+    <label>Логин
+      <input type="text" name="login" placeholder="Логин">
+    </label>
+
+    <label>Пароль
+      <input type="password" name="password" placeholder="пароль">
+    </label>
+
+    <button type="submit">Войти</button>
+  </form>
+{% endblock %}

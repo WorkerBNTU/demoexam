@@ -1,0 +1,18 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+  <h2>Создание заявки</h2>
+  <form action="/create" method="post">
+      <select name="course">
+          <option value="Основы алгоритмизации и программирования">Основы алгоритмизации и программирования</option>
+          <option value="Основы веб-дизайна">Основы веб-дизайна</option>
+          <option value="Основы проектирования баз данных">Основы проектирования баз данных</option>
+      </select>
+      <input type="date" name="date" placeholder="дата" required>
+      <select name="payment">
+          <option value="Наличные">Наличные</option>
+          <option value="Перевод по номеру телефона">По номеру</option>
+      </select>
+      <button type="submit">Отправить</button>
+  </form>
+{% endblock %}
